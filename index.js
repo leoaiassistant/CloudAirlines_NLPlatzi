@@ -12,12 +12,12 @@ const infomk = 'https://media3.giphy.com/media/atZII8NmbPGw0/giphy.gif?cid=790b7
 
 const admin = require('firebase-admin');
 var firebaseConfig = {
-  apiKey: "Ingrese_su_ID",
-    authDomain: "Ingrese_su_ID",
-    databaseURL: "Ingrese_su_ID",
-    projectId: "Ingrese_su_ID",
-    storageBucket: "Ingrese_su_ID",
-    messagingSenderId: "Ingrese_su_ID"
+  apiKey: "Ingrese su ID",
+    authDomain: "Ingrese su ID",
+    databaseURL: "Ingrese su ID",
+    projectId: "Ingrese su ID",
+    storageBucket: "Ingrese su ID",
+    messagingSenderId: "Ingrese su ID"
   };
 admin.initializeApp(firebaseConfig);
 var database = admin.database();
