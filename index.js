@@ -29,33 +29,33 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
  
 function welcome(agent) {
-    agent.add(`Bienvenid@ te saluda Ted 🤖, la asistente virtual de Platzi`);
+    agent.add(`Bienvenid@ te saluda Ted 🤖, la asistente virtual para reservar vuelos.`);
     agent.add(new Card({
-        title: `NLP Demo `,
+        title: `Platzi NLP `,
         imageUrl: welcome2,
-        text: `Muy pronto disponible para Google Assistant, FB Messenger & Web`,
+        text: `Muy pronto disponible para Google Assistant & Web`,
         buttonText: 'Ver Video', 
         buttonUrl: video
       })
     );
     agent.add(`Selecciona el tema que más te interesa y en el que fui entrenado:`);
- agent.add(new Suggestion(`Ver cursos`));   
- agent.add(new Suggestion(`Matricular curso 💻`));
-	agent.add(new Suggestion(`Precios 💳`));
-    agent.add(new Suggestion(`Eventos 📍`));
+ agent.add(new Suggestion(`Ver Vuelos ✈️`));   
+ agent.add(new Suggestion(`Comprar Ticket  💳`));
+	agent.add(new Suggestion(`Precios`));
+    agent.add(new Suggestion(`Reservaciones`));
    
   }
 function fallback(agent) {
     agent.add(`Recuerda que fui entrenada en:`);
-  agent.add(new Suggestion(`Ver cursos`));   
- agent.add(new Suggestion(`Matricular curso 💻`));
+  agent.add(new Suggestion(`Reservaciones vuelos ✈️`));   
+ agent.add(new Suggestion(`Mis reservaciones`));
   
   }
   
 function info(agent) { 
- agent.add(`Excelente decisión, en Platzi contamos con los siguientes cursos:`);
- agent.add(new Suggestion(`Marketing 🚀`));   
- agent.add(new Suggestion(`Programación 💻`));
+ agent.add(`Excelente decisión, en Pura Vida Airliness le podemos asesorar con:`);
+ agent.add(new Suggestion(`Comprar Vuelos 🚀`));   
+ agent.add(new Suggestion(`Reservar Vuelos 💻`));
 
 }
 
@@ -86,7 +86,7 @@ let cursosplatzi = agent.parameters.cursosplatzi;
 			name: agent.parameters.name,
           })
       .then(()=> {
-	    agent.add(`Excelente ${name} su curso ${cursosplatzi} fue matriculado con éxito ✅`);
+	    agent.add(`Excelente ${name} su reservación ${cursosplatzi} fue realizada con éxito ✅`);
     });
   }
   
