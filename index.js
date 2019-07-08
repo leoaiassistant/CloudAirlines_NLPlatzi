@@ -10,11 +10,11 @@ const infovuelos = 'https://media3.giphy.com/media/atZII8NmbPGw0/giphy.gif?cid=7
 
 const admin = require('firebase-admin');
 var firebaseConfig = {
-  authDomain: "SU ID",
-    databaseURL: "SU ID",
-    projectId: "SU ID",
-    storageBucket: "SU ID",
-    messagingSenderId: "SU ID"
+  authDomain: "tedplatzi-9e732.firebaseapp.com",
+    databaseURL: "https://tedplatzi-9e732.firebaseio.com",
+    projectId: "tedplatzi-9e732",
+    storageBucket: "tedplatzi-9e732.appspot.com",
+    messagingSenderId: "962756455782"
   };
 
 admin.initializeApp(functions.config().firebase);
@@ -50,9 +50,11 @@ function fallback(agent) {
   
   }
   
-function info(agent) { 
- agent.add(`Para conocer el código internacional IATA del aeropuerto, indique su ciudad y país:`);
- agent.add(new Suggestion(`Reservar vuelo`));   
+function booktype(agent) { 
+ agent.add(`Excelente, que tipo de vuelo buscas?`);
+ agent.add(new Suggestion(`Solo ida`));
+ agent.add(new Suggestion(`Ida y vuelta`));
+ agent.add(new Suggestion(`Multidestino`));   
 
 
 }
@@ -63,7 +65,7 @@ function book (agent) {
     const name = agent.parameters.name;
 	const email = agent.parameters.email;
 	const idpassport = agent.parameters.idpassport;
-	const tipovuelo = agent.parameters.tipovuelo;
+	const paispassport = agent.parameters.paispassport;
 	const origin = agent.parameters.origin;
 	const fecha1 = agent.parameters.fecha1;
 	const destination = agent.parameters.destination;
@@ -73,14 +75,41 @@ function book (agent) {
 
     // Get the database collection 'dialogflow' and document 'agent' and store
     // the document  {entry: "<value of database entry>"} in the 'agent' document
-    const dialogflowAgentRef = db.collection('reserva_vuelos').doc();
+    const dialogflowAgentRef = db.collection('reservavuelos_roundtrip').doc();
     return db.runTransaction(t => {
-      t.set(dialogflowAgentRef, { viFecha2: fecha2, vDestino: destination, ivFecha1: fecha1, iiiOrigen:origin, iiEmail: email, iNombre: name});
+      t.set(dialogflowAgentRef, { viiipaispassport: paispassport, viFecha2: fecha2, vDestino: destination, ivFecha1: fecha1, iiiOrigen:origin, iiEmail: email, iNombre: name});
 	 
 
       return Promise.resolve('Write complete');
     }).then(doc => {
-      agent.add(`Excelente "${name}" su curso fue matriculado con éxito.`);
+      agent.add(`Excellent "${name}" your flight was booked successfully. `);
+    }).catch(err => {
+      console.log(`Error writing to Firestore: ${err}`);
+      agent.add(`Failed to write "${name}" to the Firestore database.`);
+    });
+  }
+
+function book2 (agent) {
+    // Get parameter from Dialogflow with the string to add to the database
+    const name = agent.parameters.name;
+	const email = agent.parameters.email;
+	const idpassport = agent.parameters.idpassport;
+	const origin = agent.parameters.origin;
+	const fecha1 = agent.parameters.fecha1;
+	const destination = agent.parameters.destination;
+	const quant = agent.parameters.quant;
+	const tyc = agent.parameters.tyc;
+
+    // Get the database collection 'dialogflow' and document 'agent' and store
+    // the document  {entry: "<value of database entry>"} in the 'agent' document
+    const dialogflowAgentRef = db.collection('reservavuelos_oneway').doc();
+    return db.runTransaction(t => {
+      t.set(dialogflowAgentRef, { vDestino: destination, ivFecha1: fecha1, iiiOrigen:origin, iiEmail: email, iNombre: name});
+	 
+
+      return Promise.resolve('Write complete');
+    }).then(doc => {
+      agent.add(`Excellent "${name}" your flight was booked successfully. `);
     }).catch(err => {
       console.log(`Error writing to Firestore: ${err}`);
       agent.add(`Failed to write "${name}" to the Firestore database.`);
@@ -92,8 +121,9 @@ function book (agent) {
   let intentMap = new Map();
 intentMap.set('Default Welcome Intent', welcome);
 intentMap.set('Default Fallback Intent', fallback);
-intentMap.set('info.cursos', info);
-intentMap.set('book', book);
+intentMap.set('book', booktype);
+intentMap.set('book.roundtrip', book);
+intentMap.set('book.oneway', book2);
   
   agent.handleRequest(intentMap);
 });
