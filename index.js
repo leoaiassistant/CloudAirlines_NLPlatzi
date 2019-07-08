@@ -4,17 +4,19 @@ const functions = require('firebase-functions');
 const {WebhookClient} = require('dialogflow-fulfillment');
 const {Card, Suggestion} = require('dialogflow-fulfillment');
 const videowelcome = 'https://www.youtube.com/watch?v=U9hq83ryFj0';
+const wedo = 'https://media.giphy.com/media/t8LaaaPNOYVJfImLNu/giphy.gif';
+const buceo = 'https://media.giphy.com/media/3oEhmGYdZDCsGANSUw/giphy.gif';
 const welcome = 'https://media3.giphy.com/media/9Y5dai0r8F9xb5FCrw/giphy.gif?cid=3640f6095c96e7c87a56424a41e5d14f';
 const welcome2 = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCI7tShlyVeubGtVbh6XTCPNfZVlXFFYOEO55zskrSjLzwEKUQ';
 const infovuelos = 'https://media3.giphy.com/media/atZII8NmbPGw0/giphy.gif?cid=790b76115ce5b0944366663159488200&rid=giphy.gif';
 
 const admin = require('firebase-admin');
 var firebaseConfig = {
-  authDomain: "tedplatzi-9e732.firebaseapp.com",
-    databaseURL: "https://tedplatzi-9e732.firebaseio.com",
-    projectId: "tedplatzi-9e732",
-    storageBucket: "tedplatzi-9e732.appspot.com",
-    messagingSenderId: "962756455782"
+  authDomain: "SU ID",
+    databaseURL: "SU ID",
+    projectId: "SU ID",
+    storageBucket: "SU ID",
+    messagingSenderId: "SU ID"
   };
 
 admin.initializeApp(functions.config().firebase);
@@ -62,13 +64,21 @@ function book (agent) {
     // Get parameter from Dialogflow with the string to add to the database
     const name = agent.parameters.name;
 	const email = agent.parameters.email;
-	const cursoplatzi = agent.parameters.cursoplatzi;
+	const idpassport = agent.parameters.idpassport;
+	const tipovuelo = agent.parameters.tipovuelo;
+	const origin = agent.parameters.origin;
+	const fecha1 = agent.parameters.fecha1;
+	const destination = agent.parameters.destination;
+	const fecha2 = agent.parameters.fecha2;
+	const quant = agent.parameters.quant;
+	const tyc = agent.parameters.tyc;
 
     // Get the database collection 'dialogflow' and document 'agent' and store
     // the document  {entry: "<value of database entry>"} in the 'agent' document
-    const dialogflowAgentRef = db.collection('matriculados').doc();
+    const dialogflowAgentRef = db.collection('reserva_vuelos').doc();
     return db.runTransaction(t => {
-      t.set(dialogflowAgentRef, {Nombre: name});
+      t.set(dialogflowAgentRef, { viFecha2: fecha2, vDestino: destination, ivFecha1: fecha1, iiiOrigen:origin, iiEmail: email, iNombre: name});
+	 
 
       return Promise.resolve('Write complete');
     }).then(doc => {
