@@ -12,11 +12,11 @@ const infovuelos = 'https://media3.giphy.com/media/atZII8NmbPGw0/giphy.gif?cid=7
 
 const admin = require('firebase-admin');
 var firebaseConfig = {
-  authDomain: "tedplatzi-9e732.firebaseapp.com",
-    databaseURL: "https://tedplatzi-9e732.firebaseio.com",
-    projectId: "tedplatzi-9e732",
-    storageBucket: "tedplatzi-9e732.appspot.com",
-    messagingSenderId: "962756455782"
+  authDomain: "SU_ID",
+    databaseURL: "SU_ID",
+    projectId: "SU_ID",
+    storageBucket: "SU_ID",
+    messagingSenderId: "SU_ID"
   };
 
 admin.initializeApp(functions.config().firebase);
