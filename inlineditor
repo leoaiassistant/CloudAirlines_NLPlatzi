@@ -1,0 +1,47 @@
+'use strict';
+ 
+const functions = require('firebase-functions');
+const {WebhookClient} = require('dialogflow-fulfillment');
+const {Card, Suggestion} = require('dialogflow-fulfillment');
+
+admin.initializeApp(functions.config().firebase);
+const db = admin.firestore();
+
+
+process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
+ 
+exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
+  const agent = new WebhookClient({ request, response });
+  console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
+ 
+function welcome(agent) {
+    agent.add(`Bienvenid@ te saluda Ted 🤖, la asistente virtual de Cloud Airliness`);
+    agent.add(new Card({
+        title: `NLP Demo `,
+        imageUrl: welcome2,
+        text: `Automatización de reservación de vuelos en una base datos en tiempo real en la nube.`,
+        buttonText: 'Ver Video', 
+        buttonUrl: videowelcome
+      })
+    );
+    agent.add(`Recuerda que fui entrenada:`);
+ agent.add(new Suggestion(`Reservar vuelos`));   
+ agent.add(new Suggestion(`Códigos aeropuertos`));
+	
+   
+  }
+function fallback(agent) {
+    agent.add(`Recuerda que fui entrenada en:`);
+ agent.add(new Suggestion(`Reservar vuelos`));   
+ agent.add(new Suggestion(`Códigos aeropuertos`));
+  
+  }
+  
+
+  let intentMap = new Map();
+intentMap.set('Default Welcome Intent', welcome);
+intentMap.set('Default Fallback Intent', fallback);
+
+  
+  agent.handleRequest(intentMap);
+});
