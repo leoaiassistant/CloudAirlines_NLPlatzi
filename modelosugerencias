@@ -1,0 +1,38 @@
+'use strict';
+	 
+	const functions = require('firebase-functions');
+	const {WebhookClient} = require('dialogflow-fulfillment');
+	const {Card, Suggestion} = require('dialogflow-fulfillment');
+	
+
+	admin.initializeApp(functions.config().firebase);
+	const db = admin.firestore();
+
+
+	process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
+	 
+	exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
+	  const agent = new WebhookClient({ request, response });
+	  console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
+	 
+	
+	function tiporeserva(agent) { 
+	 agent.add(`Excelente, que tipo de vuelo buscas?`);
+	 agent.add(new Suggestion(`Solo ida`));
+	 agent.add(new Suggestion(`Ida y vuelta`));
+	 agent.add(new Suggestion(`Multidestino`));   
+
+
+	}
+
+	 
+	  let intentMap = new Map();
+	intentMap.set('Default Welcome Intent', welcome);
+	intentMap.set('Default Fallback Intent', fallback);
+	intentMap.set('reserva', tiporeserva);
+	intentMap.set('reserva.roundtrip', reserva1);
+	intentMap.set('reserva.oneway', reserva2);
+	intentMap.set('info.iata', iata1);
+	  
+	  agent.handleRequest(intentMap);
+	});
